@@ -1,0 +1,797 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Initialize project structure and development environment": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950566470
+      },
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950602173
+      },
+      {
+        "executionId": "216aa815-854e-422e-bbd1-b5559e85f245",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788954912152
+      }
+    ],
+    "2. Configure AWS infrastructure": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950567599
+      },
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950602951
+      },
+      {
+        "executionId": "216aa815-854e-422e-bbd1-b5559e85f245",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788955383177
+      }
+    ],
+    "3. Set up backend project dependencies and configuration": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950567795
+      },
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950603645
+      },
+      {
+        "executionId": "216aa815-854e-422e-bbd1-b5559e85f245",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788954913098
+      }
+    ],
+    "4. Set up frontend project dependencies and configuration": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950567945
+      },
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950604555
+      },
+      {
+        "executionId": "216aa815-854e-422e-bbd1-b5559e85f245",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788955383815
+      }
+    ],
+    "5.1 Create Alembic migration for users table": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950568141
+      },
+      {
+        "executionId": "216aa815-854e-422e-bbd1-b5559e85f245",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788955391984
+      },
+      {
+        "executionId": "7f2a90d6-61a7-49a0-8802-e67a33d6d129",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788959763436
+      }
+    ],
+    "5.2 Create Alembic migration for categories table": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950568267
+      },
+      {
+        "executionId": "216aa815-854e-422e-bbd1-b5559e85f245",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788955392813
+      },
+      {
+        "executionId": "7f2a90d6-61a7-49a0-8802-e67a33d6d129",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788959764357
+      }
+    ],
+    "5.3 Create Alembic migration for products table": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950568398
+      },
+      {
+        "executionId": "216aa815-854e-422e-bbd1-b5559e85f245",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788955393607
+      },
+      {
+        "executionId": "7f2a90d6-61a7-49a0-8802-e67a33d6d129",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788960318928
+      }
+    ],
+    "5.4 Create Alembic migration for cart_items table": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950568522
+      },
+      {
+        "executionId": "216aa815-854e-422e-bbd1-b5559e85f245",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788955394419
+      },
+      {
+        "executionId": "7f2a90d6-61a7-49a0-8802-e67a33d6d129",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788960319466
+      }
+    ],
+    "5.5 Create Alembic migration for orders table": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950568694
+      },
+      {
+        "executionId": "216aa815-854e-422e-bbd1-b5559e85f245",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788955395219
+      }
+    ],
+    "5.6 Create Alembic migration for order_items table": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950568834
+      }
+    ],
+    "5.7 Create Alembic migration for delivery_addresses table": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950568982
+      }
+    ],
+    "6. Create SQLAlchemy ORM models": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950569099
+      }
+    ],
+    "7. Create Pydantic schemas for request/response validation": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950569230
+      }
+    ],
+    "8.1 Create password hashing service": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950569362
+      }
+    ],
+    "8.3 Create JWT token service": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950569482
+      }
+    ],
+    "8.5 Create authentication dependencies": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950569593
+      }
+    ],
+    "12.1 Create order number generation function": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950569797
+      }
+    ],
+    "12.3 Implement create_order(user_id, delivery_address) with atomic transaction": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950569940
+      }
+    ],
+    "12.6 Implement get_user_orders(user_id, filters, pagination)": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950570070
+      }
+    ],
+    "12.7 Implement get_order_by_id(order_id, user_id) with authorization": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950570300
+      }
+    ],
+    "14.1 POST /auth/register - Customer registration": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950570455
+      }
+    ],
+    "14.4 POST /auth/login - User login": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950570595
+      }
+    ],
+    "14.5 POST /auth/logout - Client-side token removal": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950570717
+      }
+    ],
+    "14.6 GET /auth/me - Get current user profile": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950570831
+      }
+    ],
+    "15.1 GET /products - List products with filters": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950570945
+      }
+    ],
+    "15.4 GET /products/:id - Get product details": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950571067
+      }
+    ],
+    "15.5 GET /categories - List all categories": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950571185
+      }
+    ],
+    "16.1 GET /cart - Get current user's cart": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950571303
+      }
+    ],
+    "16.2 POST /cart/items - Add item to cart": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950571417
+      }
+    ],
+    "16.3 PATCH /cart/items/:id - Update cart item quantity": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950571528
+      }
+    ],
+    "16.4 DELETE /cart/items/:id - Remove cart item": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950571646
+      }
+    ],
+    "16.5 DELETE /cart - Clear entire cart": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950571786
+      }
+    ],
+    "17.1 POST /orders - Create order from cart": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950571899
+      }
+    ],
+    "17.2 GET /orders - Get customer's order history": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950572025
+      }
+    ],
+    "17.3 GET /orders/:id - Get order details": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950572154
+      }
+    ],
+    "18.1 POST /admin/products - Create product": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950572295
+      }
+    ],
+    "18.2 PATCH /admin/products/:id - Update product": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950572435
+      }
+    ],
+    "18.3 DELETE /admin/products/:id - Soft delete product": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950572560
+      }
+    ],
+    "18.4 GET /admin/products - Admin product listing": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950572662
+      }
+    ],
+    "19.1 GET /admin/orders - List all orders": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950572788
+      }
+    ],
+    "19.2 GET /admin/orders/:id - Get order details": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950572936
+      }
+    ],
+    "19.3 PATCH /admin/orders/:id/status - Update order status": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950573050
+      }
+    ],
+    "20. Implement admin dashboard API endpoint": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950573161
+      }
+    ],
+    "21. Implement global error handling middleware": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950573269
+      }
+    ],
+    "22. Checkpoint - Backend API testing and validation": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950573389
+      }
+    ],
+    "23. Configure frontend routing structure": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950573505
+      }
+    ],
+    "24.1 Create authStore": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950573642
+      }
+    ],
+    "24.2 Create cartStore": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950573796
+      }
+    ],
+    "24.3 Create uiStore": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950573929
+      }
+    ],
+    "25. Create API service layer with Axios": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950574067
+      }
+    ],
+    "26. Create TypeScript type definitions": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950574241
+      }
+    ],
+    "27. Implement utility functions": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950574394
+      }
+    ],
+    "28.1 Button component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950574520
+      }
+    ],
+    "28.2 Input component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950574662
+      }
+    ],
+    "28.3 Modal component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950574775
+      }
+    ],
+    "28.4 LoadingSpinner component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950574896
+      }
+    ],
+    "28.5 ErrorBoundary component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950575014
+      }
+    ],
+    "29.1 Header component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950575133
+      }
+    ],
+    "29.2 Footer component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950575257
+      }
+    ],
+    "29.3 Navigation component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950575376
+      }
+    ],
+    "29.4 AdminSidebar component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950575494
+      }
+    ],
+    "30.1 ProductCard component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950575673
+      }
+    ],
+    "30.2 ProductGrid component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950575793
+      }
+    ],
+    "30.3 ProductFilters component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950575900
+      }
+    ],
+    "30.4 ProductSearch component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950576017
+      }
+    ],
+    "30.5 ImageToggle component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950576131
+      }
+    ],
+    "31.1 ProductListingPage": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950576256
+      }
+    ],
+    "31.2 ProductDetailsPage": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950576375
+      }
+    ],
+    "32.1 CartItem component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950576494
+      }
+    ],
+    "32.2 CartSummary component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950576612
+      }
+    ],
+    "32.3 CartIcon component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950576735
+      }
+    ],
+    "33.1 CartPage": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950576853
+      }
+    ],
+    "33.2 CheckoutPage": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950576967
+      }
+    ],
+    "33.3 DeliveryAddressForm component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950577085
+      }
+    ],
+    "34.1 OrderCard component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950577235
+      }
+    ],
+    "34.2 OrderStatusBadge component": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950577375
+      }
+    ],
+    "35.1 OrderHistoryPage": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950577502
+      }
+    ],
+    "35.2 OrderDetailsPage": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950577664
+      }
+    ],
+    "36.1 LoginPage": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950577810
+      }
+    ],
+    "36.2 RegisterPage": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950577947
+      }
+    ],
+    "36.3 ProfilePage": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950578099
+      }
+    ],
+    "37.1 DashboardPage": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950578215
+      }
+    ],
+    "37.2 ProductListPage (Admin)": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950578354
+      }
+    ],
+    "37.3 ProductFormPage (Admin)": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950578550
+      }
+    ],
+    "37.4 OrderManagementPage (Admin)": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950578656
+      }
+    ],
+    "38.1 HomePage": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950578773
+      }
+    ],
+    "38.2 AboutPage": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950578929
+      }
+    ],
+    "38.3 NotFoundPage": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950579069
+      }
+    ],
+    "39. Implement Tailwind CSS custom theme": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950579194
+      }
+    ],
+    "40. Implement responsive design for all components": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950579338
+      }
+    ],
+    "41. Implement lazy loading for images and routes": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950579496
+      }
+    ],
+    "42. Write frontend unit tests": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950579651
+      }
+    ],
+    "43.1 Customer journey test": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950579780
+      }
+    ],
+    "43.2 Admin journey test": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950579908
+      }
+    ],
+    "43.3 Error scenarios test": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950580031
+      }
+    ],
+    "44. Checkpoint - Full system testing": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950580170
+      }
+    ],
+    "45. Set up database deployment": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950580284
+      }
+    ],
+    "46. Deploy backend to AWS": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950580417
+      }
+    ],
+    "47. Deploy frontend to AWS": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950580538
+      }
+    ],
+    "48. Configure CI/CD pipeline": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950580662
+      }
+    ],
+    "49. Final production verification": [
+      {
+        "executionId": "fb693f52-45ba-4df2-8921-ed8a4aeae140",
+        "chatSessionId": "sess_e2d8c32e-1fd5-4492-a968-bf0b15d4c2ef",
+        "timestamp": 1788950580786
+      }
+    ]
+  }
+}

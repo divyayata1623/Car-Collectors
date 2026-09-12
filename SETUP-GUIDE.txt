@@ -1,0 +1,21 @@
+CAR COLLECTORS - Setup Guide
+
+1. Install Node.js from https://nodejs.org/
+
+2. Install frontend packages:
+cd frontend
+npm install
+
+3. Start backend:
+cd backend
+.\venv\Scripts\Activate.ps1
+python -m uvicorn main:app --reload
+
+4. Start frontend:
+cd frontend
+npm run dev
+
+Access:
+- Frontend: http://localhost:5173
+- Backend: http://localhost:8000
+- API Docs: http://localhost:8000/docs
