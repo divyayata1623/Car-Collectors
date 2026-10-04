@@ -28,6 +28,9 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
+    # UUID primary-key defaults use gen_random_uuid().
+    op.execute('CREATE EXTENSION IF NOT EXISTS pgcrypto')
+
     # 1. Create categories table
     op.create_table(
         'categories',

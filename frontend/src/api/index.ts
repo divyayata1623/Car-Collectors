@@ -1,4 +1,4 @@
-﻿import api from './client';
+import api from './client';
 import type {
   LoginRequest,
   RegisterRequest,
@@ -70,6 +70,12 @@ export const cartAPI = {
 
 // Orders API
 export const ordersAPI = {
+  getShippingSettings: () =>
+    api.get<{ flat_fee: number; free_shipping_threshold: number }>('/api/orders/shipping'),
+  createGuestOrder: (data: {
+    delivery_address: DeliveryAddress;
+    items: { product_id: string; quantity: number }[];
+  }) => api.post<Order>('/api/orders/guest', data),
   createOrder: (delivery_address: DeliveryAddress) =>
     api.post<Order>('/api/orders', { delivery_address }),
   
@@ -82,13 +88,21 @@ export const ordersAPI = {
 
 // Admin API
 export const adminAPI = {
+  getShippingSettings: () =>
+    api.get<{ flat_fee: number; free_shipping_threshold: number }>('/api/admin/shipping'),
+  updateShippingSettings: (data: { flat_fee: number; free_shipping_threshold: number }) =>
+    api.put('/api/admin/shipping', data),
   createProduct: (formData: FormData) =>
-    api.post('/api/admin/products', formData, {
+    api.post<Product>('/api/admin/products', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     }),
   
-  updateProduct: (id: string, data: any) =>
-    api.put(`/api/admin/products/${id}`, data),
+  updateProduct: (id: string, data: FormData | Record<string, any>) => {
+    const isFormData = data instanceof FormData;
+    return api.put<Product>(`/api/admin/products/${id}`, data, {
+      headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : { 'Content-Type': 'application/json' },
+    });
+  },
   
   deleteProduct: (id: string) =>
     api.delete(`/api/admin/products/${id}`),

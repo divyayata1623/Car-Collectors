@@ -11,11 +11,11 @@ from alembic import context
 # Add parent directory to path to import database module
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from database import Base
+from database import Base, DATABASE_URL
 from dotenv import load_dotenv
 
 # Import all models so they're registered with Base.metadata
-from models import User, Category, Product, CartItem, Order, OrderItem, DeliveryAddress
+from models import User, Category, Product, CartItem, Order, OrderItem, DeliveryAddress, ShippingSetting
 
 # Load environment variables
 load_dotenv()
@@ -27,7 +27,7 @@ config = context.config
 # Set sqlalchemy.url from environment variable
 config.set_main_option(
     "sqlalchemy.url",
-    os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/car_collectors")
+    DATABASE_URL
 )
 
 # Interpret the config file for Python logging.

@@ -1,17 +1,23 @@
 ﻿
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Navbar, AdminRoute, AdminLayout } from './components';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Navbar, AdminRoute, AdminLayout, ProtectedRoute } from './components';
 import {
   HomePage,
   ProductsPage,
   ProductDetailPage,
   CartPage,
+  CheckoutPage,
+  LoginPage,
+  OrdersPage,
+  RegisterPage,
 } from './pages';
 import { AdminLoginPage } from './pages/admin/AdminLoginPage';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { AdminProductsPage } from './pages/admin/AdminProductsPage';
 import { AdminOrdersPage } from './pages/admin/AdminOrdersPage';
 import { AdminInventoryPage } from './pages/admin/AdminInventoryPage';
+import { AdminShippingPage } from './pages/admin/AdminShippingPage';
+import { OrderSuccessPage } from './pages/OrderSuccessPage';
 
 const BrandsPage = () => (
   <div className="min-h-screen bg-gradient-to-b from-gray-900 via-navy-900 to-black py-20">
@@ -54,8 +60,22 @@ function App() {
         <Route path="/products/:id" element={<><Navbar /><ProductDetailPage /></>} />
         <Route path="/brands" element={<><Navbar /><BrandsPage /></>} />
         <Route path="/about" element={<><Navbar /><AboutPage /></>} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/cart" element={<><Navbar /><CartPage /></>} />
+        <Route path="/checkout" element={<><Navbar /><CheckoutPage /></>} />
+        <Route path="/order-success" element={<OrderSuccessPage />} />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <Navbar />
+              <OrdersPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
         <Route
           path="/admin/dashboard"
           element={
@@ -92,6 +112,16 @@ function App() {
             <AdminRoute>
               <AdminLayout>
                 <AdminInventoryPage />
+              </AdminLayout>
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/shipping"
+          element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminShippingPage />
               </AdminLayout>
             </AdminRoute>
           }

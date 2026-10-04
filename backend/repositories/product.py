@@ -88,6 +88,8 @@ class ProductRepository:
                 Product.brand.ilike(f"%{search}%"),
                 Product.series.ilike(f"%{search}%"),
                 Product.model.ilike(f"%{search}%"),
+                Product.color.ilike(f"%{search}%"),
+                Product.condition.ilike(f"%{search}%"),
                 Product.description.ilike(f"%{search}%")
             )
             filters.append(search_filter)

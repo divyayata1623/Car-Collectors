@@ -8,6 +8,7 @@ from .cart_item import CartItem
 from .order import Order
 from .order_item import OrderItem
 from .delivery_address import DeliveryAddress
+from .shipping_setting import ShippingSetting
 
 __all__ = [
     'User',
@@ -16,5 +17,6 @@ __all__ = [
     'CartItem',
     'Order',
     'OrderItem',
-    'DeliveryAddress'
+    'DeliveryAddress',
+    'ShippingSetting'
 ]

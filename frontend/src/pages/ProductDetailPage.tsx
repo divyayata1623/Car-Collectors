@@ -1,6 +1,7 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { productsAPI, cartAPI } from '../api';
+import { productsAPI } from '../api';
+import { resolveImageUrl } from '../api/client';
 import { useCartStore } from '../store/cartStore';
 import { LoadingSpinner } from '../components';
 import type { Product } from '../types';
@@ -8,7 +9,7 @@ import type { Product } from '../types';
 export const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { setCart } = useCartStore();
+  const { addItem } = useCartStore();
   
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,9 +37,14 @@ export const ProductDetailPage: React.FC = () => {
   const handleAddToCart = async () => {
     setIsAdding(true);
     try {
-      await cartAPI.addToCart(product!.id, quantity);
-      const cartResponse = await cartAPI.getCart();
-      setCart(cartResponse.data);
+      addItem({
+        id: product!.id,
+        product: product!,
+        quantity,
+        subtotal: product!.price * quantity,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
       navigate('/cart');
     } catch (error) {
       console.error('Failed to add to cart:', error);
@@ -59,7 +65,7 @@ export const ProductDetailPage: React.FC = () => {
             {/* Main Image */}
             <div className="aspect-square bg-navy-800 rounded-xl overflow-hidden border border-blue-600/20">
               <img
-                src={showBackImage ? product.back_package_image_url : product.front_package_image_url}
+                src={resolveImageUrl(showBackImage ? product.back_package_image_url : product.front_package_image_url)}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
@@ -74,7 +80,7 @@ export const ProductDetailPage: React.FC = () => {
                 }`}
               >
                 <img
-                  src={product.front_package_image_url}
+                  src={resolveImageUrl(product.front_package_image_url)}
                   alt="Front"
                   className="w-full h-full object-cover"
                 />
@@ -86,7 +92,7 @@ export const ProductDetailPage: React.FC = () => {
                 }`}
               >
                 <img
-                  src={product.back_package_image_url}
+                  src={resolveImageUrl(product.back_package_image_url)}
                   alt="Back"
                   className="w-full h-full object-cover"
                 />
@@ -105,8 +111,12 @@ export const ProductDetailPage: React.FC = () => {
                   <span>{product.series}</span>
                 </>
               )}
-              <span>•</span>
-              <span>{product.category.name}</span>
+              {product.category && (
+                <>
+                  <span>•</span>
+                  <span>{product.category.name}</span>
+                </>
+              )}
             </div>
 
             {/* Name */}

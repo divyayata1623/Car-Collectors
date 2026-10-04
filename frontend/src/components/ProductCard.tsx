@@ -1,5 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { resolveImageUrl } from '../api/client';
+import { useCartStore } from '../store/cartStore';
 import type { Product } from '../types';
 
 interface ProductCardProps {
@@ -8,6 +10,7 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [showBackImage, setShowBackImage] = useState(false);
+  const addItem = useCartStore((state) => state.addItem);
 
   return (
     <Link
@@ -22,22 +25,25 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       >
         {/* Premium Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
-        
+
+        {/* Product Image */}
         <img
-          src={showBackImage ? product.back_package_image_url : product.front_package_image_url}
-          alt={`${product.name} - ${showBackImage ? 'Back' : 'Front'}`}
+          src={
+            showBackImage
+              ? resolveImageUrl(product.back_package_image_url)
+              : resolveImageUrl(product.front_package_image_url)
+          }
+          alt={`${product.name} - ${
+            showBackImage ? 'Back' : 'Front'
+          }`}
           className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
         />
-        
-        {/* Stock Badge */}
+
+        {/* Stock Badge - Only IN STOCK / OUT OF STOCK */}
         <div className="absolute top-4 right-4 z-20">
           {product.stock_quantity === 0 ? (
             <div className="bg-gradient-to-r from-red-600 to-red-700 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">
               OUT OF STOCK
-            </div>
-          ) : product.stock_quantity <= 5 ? (
-            <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg animate-pulse">
-              ONLY {product.stock_quantity} LEFT
             </div>
           ) : (
             <div className="bg-gradient-to-r from-green-600 to-green-700 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">
@@ -48,21 +54,37 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {/* Image Toggle Indicator */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
-          <div className={`w-2 h-2 rounded-full transition-all ${!showBackImage ? 'bg-blue-500 w-6' : 'bg-gray-500'}`}></div>
-          <div className={`w-2 h-2 rounded-full transition-all ${showBackImage ? 'bg-blue-500 w-6' : 'bg-gray-500'}`}></div>
+          <div
+            className={`h-2 rounded-full transition-all ${
+              !showBackImage
+                ? 'bg-blue-500 w-6'
+                : 'bg-gray-500 w-2'
+            }`}
+          ></div>
+
+          <div
+            className={`h-2 rounded-full transition-all ${
+              showBackImage
+                ? 'bg-blue-500 w-6'
+                : 'bg-gray-500 w-2'
+            }`}
+          ></div>
         </div>
       </div>
 
       {/* Product Info */}
       <div className="p-5">
+
         {/* Brand & Series */}
         <div className="flex items-center gap-2 mb-2">
           <span className="text-xs text-blue-400 font-bold uppercase tracking-wider">
             {product.brand}
           </span>
+
           {product.series && (
             <>
               <span className="text-gray-600">•</span>
+
               <span className="text-xs text-orange-400 font-semibold uppercase tracking-wider">
                 {product.series}
               </span>
@@ -78,7 +100,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Scale */}
         {product.scale && (
           <div className="text-xs text-gray-500 mb-3">
-            Scale: <span className="text-gray-400 font-semibold">{product.scale}</span>
+            Scale:{' '}
+            <span className="text-gray-400 font-semibold">
+              {product.scale}
+            </span>
           </div>
         )}
 
@@ -89,12 +114,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               ₹{product.price.toLocaleString('en-IN')}
             </div>
           </div>
-          
+
+          {/* Add to Cart */}
           {product.stock_quantity > 0 && (
             <button
               onClick={(e) => {
                 e.preventDefault();
-                // Cart functionality will be added
+                e.stopPropagation();
+                addItem({
+                  id: product.id,
+                  product,
+                  quantity: 1,
+                  subtotal: product.price,
+                  created_at: new Date().toISOString(),
+                  updated_at: new Date().toISOString(),
+                });
               }}
               className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-blue-500/50 hover:scale-105"
             >

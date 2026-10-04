@@ -1,52 +1,38 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { cartAPI } from '../api';
+import { ordersAPI } from '../api';
+import { resolveImageUrl } from '../api/client';
 import { useCartStore } from '../store/cartStore';
 import { LoadingSpinner } from '../components';
 
 export const CartPage: React.FC = () => {
   const navigate = useNavigate();
-  const { cart, setCart } = useCartStore();
-  const [isLoading, setIsLoading] = useState(true);
+  const { cart, updateItem, removeItem: removeCartItem } = useCartStore();
+  const [isLoading] = useState(false);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
+  const [shipping, setShipping] = useState({ flat_fee: 0, free_shipping_threshold: 0 });
 
-  useEffect(() => {
-    loadCart();
+  React.useEffect(() => {
+    ordersAPI.getShippingSettings().then(({ data }) => setShipping({
+      flat_fee: Number(data.flat_fee),
+      free_shipping_threshold: Number(data.free_shipping_threshold),
+    })).catch(() => undefined);
   }, []);
 
-  const loadCart = async () => {
-    try {
-      const response = await cartAPI.getCart();
-      setCart(response.data);
-    } catch (error) {
-      console.error('Failed to load cart:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const shippingFee = shipping.free_shipping_threshold > 0 && cart && cart.total >= shipping.free_shipping_threshold
+    ? 0
+    : shipping.flat_fee;
 
   const updateQuantity = async (cartItemId: string, quantity: number) => {
     setIsUpdating(cartItemId);
-    try {
-      await cartAPI.updateCartItem(cartItemId, quantity);
-      await loadCart();
-    } catch (error) {
-      console.error('Failed to update cart:', error);
-    } finally {
-      setIsUpdating(null);
-    }
+    updateItem(cartItemId, quantity);
+    setIsUpdating(null);
   };
 
   const removeItem = async (cartItemId: string) => {
     setIsUpdating(cartItemId);
-    try {
-      await cartAPI.removeFromCart(cartItemId);
-      await loadCart();
-    } catch (error) {
-      console.error('Failed to remove item:', error);
-    } finally {
-      setIsUpdating(null);
-    }
+    removeCartItem(cartItemId);
+    setIsUpdating(null);
   };
 
   if (isLoading) return <LoadingSpinner />;
@@ -85,7 +71,7 @@ export const CartPage: React.FC = () => {
                   {/* Product Image */}
                   <Link to={`/products/${item.product.id}`}>
                     <img
-                      src={item.product.front_package_image_url}
+                      src={resolveImageUrl(item.product.front_package_image_url)}
                       alt={item.product.name}
                       className="w-24 h-24 object-cover rounded-lg"
                     />
@@ -161,12 +147,12 @@ export const CartPage: React.FC = () => {
                 </div>
                 <div className="flex justify-between text-gray-300">
                   <span>Shipping</span>
-                  <span>Free</span>
+                  <span>₹{shippingFee.toLocaleString('en-IN')}</span>
                 </div>
                 <div className="border-t border-blue-600/20 pt-3">
                   <div className="flex justify-between text-white font-bold text-lg">
                     <span>Total</span>
-                    <span>₹{cart.total.toLocaleString('en-IN')}</span>
+                    <span>₹{(cart.total + shippingFee).toLocaleString('en-IN')}</span>
                   </div>
                 </div>
               </div>

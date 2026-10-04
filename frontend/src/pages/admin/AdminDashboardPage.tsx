@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { adminAPI } from '../../api';
+import { adminAPI, productsAPI } from '../../api';
 
 export const AdminDashboardPage: React.FC = () => {
   const [stats, setStats] = useState({ totalProducts: 0, totalOrders: 0, totalSales: 0, lowStock: 0 });
@@ -11,13 +11,19 @@ export const AdminDashboardPage: React.FC = () => {
 
   const loadDashboardData = async () => {
     try {
-      const ordersResponse = await adminAPI.getAllOrders({ page: 1, limit: 5 });
-      setRecentOrders(ordersResponse.data.orders || []);
-      setStats({ 
-        totalProducts: 150, 
-        totalOrders: ordersResponse.data.pagination?.total || 0, 
-        totalSales: 125000, 
-        lowStock: 12 
+      const [ordersResponse, productsResponse] = await Promise.all([
+        adminAPI.getAllOrders({ page: 1, limit: 5 }),
+        productsAPI.getProducts({ page: 1, limit: 100 }),
+      ]);
+      const recentOrders = ordersResponse.data.orders || [];
+      const products = productsResponse.data.products || [];
+
+      setRecentOrders(recentOrders);
+      setStats({
+        totalProducts: productsResponse.data.pagination?.total || products.length,
+        totalOrders: ordersResponse.data.pagination?.total || 0,
+        totalSales: recentOrders.reduce((total, order) => total + Number(order.total_amount || 0), 0),
+        lowStock: products.filter((product) => product.stock_quantity > 0 && product.stock_quantity <= 10).length,
       });
     } catch (error) {
       console.error('Failed to load dashboard data:', error);
@@ -89,7 +95,7 @@ export const AdminDashboardPage: React.FC = () => {
           link="/admin/orders" 
         />
         <StatCard 
-          title="Total Sales" 
+          title="Recent Sales" 
           value={'₹' + stats.totalSales.toLocaleString('en-IN')} 
           icon={
             <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">

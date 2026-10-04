@@ -58,22 +58,6 @@ async def get_products(
     )
 
 
-@router.get("/{product_id}", response_model=ProductResponse)
-async def get_product(product_id: str, db: Session = Depends(get_db)):
-    """
-    Get single product by ID.
-    """
-    product = ProductRepository.get_by_id(db, product_id)
-    
-    if not product or not product.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Product not found"
-        )
-    
-    return product
-
-
 @router.get("/filters/brands", response_model=list[str])
 async def get_brands(db: Session = Depends(get_db)):
     """
@@ -97,3 +81,17 @@ async def get_categories(db: Session = Depends(get_db)):
     """
     categories = db.query(Category).order_by(Category.name).all()
     return categories
+
+
+@router.get("/{product_id}", response_model=ProductResponse)
+async def get_product(product_id: str, db: Session = Depends(get_db)):
+    """Get a single active product by ID."""
+    product = ProductRepository.get_by_id(db, product_id)
+
+    if not product or not product.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found"
+        )
+
+    return product

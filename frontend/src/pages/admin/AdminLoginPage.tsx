@@ -37,29 +37,31 @@ export const AdminLoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-navy-900 to-black flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#070A10] flex items-center justify-center px-4 py-10 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(52,105,218,0.18),transparent_34rem)]" />
       <div className="max-w-md w-full">
         {/* Admin Badge */}
         <div className="text-center mb-8">
-          <div className="inline-block bg-gradient-to-r from-orange-600 to-orange-700 text-white px-6 py-2 rounded-full text-sm font-bold mb-4 shadow-lg">
-            🔐 ADMIN ACCESS
+          <div className="inline-flex items-center gap-2 border border-[#F26A21]/40 bg-[#F26A21]/10 text-[#FF8A4B] px-4 py-2 rounded-full text-xs font-bold tracking-[0.18em] mb-5">
+            <span className="h-2 w-2 rounded-full bg-[#F26A21]" />
+            ADMIN ACCESS
           </div>
-          <h1 className="text-4xl font-bold text-white mb-2">Admin Dashboard</h1>
-          <p className="text-gray-400">Sign in to manage your store</p>
+          <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">Welcome back, Admin</h1>
+          <p className="text-[#9AA7BB]">Sign in to manage your collection</p>
         </div>
 
         {/* Login Card */}
-        <div className="bg-gradient-to-b from-gray-800 to-gray-900 border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
+        <div className="relative bg-[#101827] border border-white/10 rounded-2xl p-8 shadow-2xl shadow-black/40">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <div className="bg-red-500/10 border border-red-500 text-red-400 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-red-500/10 border border-red-400/40 text-red-300 px-4 py-3 rounded-lg text-sm">
                 {error}
               </div>
             )}
 
             {/* Email */}
             <div>
-              <label className="block text-gray-300 text-sm font-semibold mb-2">
+              <label className="block text-[#C3CBD8] text-sm font-semibold mb-2">
                 Admin Email
               </label>
               <input
@@ -67,14 +69,14 @@ export const AdminLoginPage: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-gray-900 border border-gray-700 focus:border-orange-500 rounded-lg px-4 py-3 text-white focus:outline-none transition-all"
+                className="w-full bg-[#080D16] border border-white/10 focus:border-[#4F86F7] rounded-lg px-4 py-3 text-white focus:outline-none transition-all"
                 placeholder="admin@carcollectors.com"
               />
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-gray-300 text-sm font-semibold mb-2">
+              <label className="block text-[#C3CBD8] text-sm font-semibold mb-2">
                 Password
               </label>
               <input
@@ -82,7 +84,7 @@ export const AdminLoginPage: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full bg-gray-900 border border-gray-700 focus:border-orange-500 rounded-lg px-4 py-3 text-white focus:outline-none transition-all"
+                className="w-full bg-[#080D16] border border-white/10 focus:border-[#4F86F7] rounded-lg px-4 py-3 text-white focus:outline-none transition-all"
                 placeholder="••••••••"
               />
             </div>
@@ -91,7 +93,7 @@ export const AdminLoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-500 hover:to-orange-600 disabled:opacity-50 text-white font-bold py-4 rounded-lg transition-all shadow-lg hover:shadow-orange-500/50"
+              className="w-full bg-gradient-to-r from-[#F26A21] to-[#D94E0D] hover:from-[#FF7A31] hover:to-[#F26A21] disabled:opacity-50 text-white font-bold py-4 rounded-lg transition-all shadow-lg shadow-[#F26A21]/20 hover:shadow-[#F26A21]/40"
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -99,8 +101,8 @@ export const AdminLoginPage: React.FC = () => {
         </div>
 
         {/* Security Note */}
-        <p className="text-center text-gray-500 text-sm mt-6">
-          🔒 This is a secure admin-only area
+        <p className="text-center text-[#68758A] text-xs mt-6 tracking-wide">
+          Secure access for Car Collectors administrators
         </p>
       </div>
     </div>

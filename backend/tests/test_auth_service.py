@@ -11,7 +11,8 @@ from jose import jwt
 from database import Base, get_db
 from models.user import User
 from schemas.user import UserCreate
-from services.auth import AuthService, get_current_user, get_current_admin
+from services.auth import AuthService
+from dependencies.auth import get_current_user, get_current_admin
 import os
 
 # Test database URL (use in-memory SQLite for tests)

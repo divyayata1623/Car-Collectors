@@ -10,6 +10,14 @@ export const CheckoutPage: React.FC = () => {
   const { cart, clearCart } = useCartStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [shipping, setShipping] = useState({ flat_fee: 0, free_shipping_threshold: 0 });
+
+  React.useEffect(() => {
+    ordersAPI.getShippingSettings().then(({ data }) => setShipping({
+      flat_fee: Number(data.flat_fee),
+      free_shipping_threshold: Number(data.free_shipping_threshold),
+    })).catch(() => undefined);
+  }, []);
 
   const {
     register,
@@ -18,12 +26,19 @@ export const CheckoutPage: React.FC = () => {
   } = useForm<DeliveryAddress>();
 
   const onSubmit = async (data: DeliveryAddress) => {
+    if (!cart) return;
     setIsSubmitting(true);
     setError('');
     try {
-      await ordersAPI.createOrder(data);
+      const response = await ordersAPI.createGuestOrder({
+        delivery_address: data,
+        items: cart.items.map((item) => ({
+          product_id: item.product.id,
+          quantity: item.quantity,
+        })),
+      });
       clearCart();
-      navigate(`/orders`);
+      navigate('/order-success', { state: { order: response.data } });
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Failed to create order. Please try again.');
     } finally {
@@ -35,6 +50,10 @@ export const CheckoutPage: React.FC = () => {
     navigate('/cart');
     return null;
   }
+
+  const shippingFee = shipping.free_shipping_threshold > 0 && cart.total >= shipping.free_shipping_threshold
+    ? 0
+    : shipping.flat_fee;
 
   return (
     <div className="min-h-screen bg-navy-900 py-8">
@@ -180,11 +199,11 @@ export const CheckoutPage: React.FC = () => {
                 </div>
                 <div className="flex justify-between text-gray-300">
                   <span>Shipping</span>
-                  <span>Free</span>
+                  <span>₹{shippingFee.toLocaleString('en-IN')}</span>
                 </div>
                 <div className="flex justify-between text-white font-bold text-lg">
                   <span>Total</span>
-                  <span>₹{cart.total.toLocaleString('en-IN')}</span>
+                  <span>₹{(cart.total + shippingFee).toLocaleString('en-IN')}</span>
                 </div>
               </div>
             </div>

@@ -6,13 +6,33 @@ from sqlalchemy.orm import Session
 import math
 
 from database import get_db
-from services.auth import get_current_user
+from dependencies.auth import get_current_user
 from services.order import OrderService
-from schemas.order import OrderCreate, OrderResponse, OrderListResponse
+from schemas.order import GuestOrderCreate, OrderCreate, OrderResponse, OrderListResponse
 from schemas.common import PaginationMeta
 from models.user import User
+from models.shipping_setting import ShippingSetting
+from schemas.shipping import ShippingSettingsResponse
 
 router = APIRouter()
+
+
+@router.get("/shipping", response_model=ShippingSettingsResponse)
+async def get_shipping_settings(db: Session = Depends(get_db)):
+    """Return public shipping rules used by cart and checkout."""
+    settings = db.query(ShippingSetting).filter(ShippingSetting.id == 1).first()
+    if not settings:
+        return ShippingSettingsResponse(flat_fee=0, free_shipping_threshold=0)
+    return settings
+
+
+@router.post("/guest", response_model=OrderResponse, status_code=status.HTTP_201_CREATED)
+async def create_guest_order(
+    order_data: GuestOrderCreate,
+    db: Session = Depends(get_db)
+):
+    """Create an order without requiring customer login credentials."""
+    return OrderService.create_guest_order(db, order_data)
 
 
 @router.post("", response_model=OrderResponse, status_code=status.HTTP_201_CREATED)

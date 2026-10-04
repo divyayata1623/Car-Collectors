@@ -70,7 +70,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 
 ### Phase 2: Database Schema and Models
 
-- [ ] 5. Design and implement database schema
+- [x] 5. Design and implement database schema
   - [x] 5.1 Create Alembic migration for users table
     - Create users table with id (UUID PK), email (UNIQUE), password_hash, full_name, mobile, role (CHECK constraint: 'ADMIN' or 'CUSTOMER'), is_active (BOOLEAN), created_at, updated_at
     - Add indexes: idx_users_email, idx_users_role
@@ -100,17 +100,17 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Add indexes: idx_orders_user, idx_orders_status, idx_orders_created_at, idx_orders_order_number
     - _Requirements: 8.1-8.13, 19.2, 19.7, 19.10, 25.1-25.6_
   
-  - [ ] 5.6 Create Alembic migration for order_items table
+  - [x] 5.6 Create Alembic migration for order_items table
     - Create order_items table with id (UUID PK), order_id (FK to orders with CASCADE DELETE), product_id (FK to products), quantity (CHECK > 0), unit_price (CHECK >= 0), subtotal (CHECK >= 0)
     - Add index: idx_order_items_order
     - _Requirements: 8.7, 19.8_
   
-  - [ ] 5.7 Create Alembic migration for delivery_addresses table
+  - [x] 5.7 Create Alembic migration for delivery_addresses table
     - Create delivery_addresses table with id (UUID PK), order_id (FK to orders with CASCADE DELETE), full_name, mobile, address_line, city, state, pincode, created_at
     - Add index: idx_delivery_addresses_order
     - _Requirements: 8.1, 29.1-29.7_
 
-- [ ] 6. Create SQLAlchemy ORM models
+- [~] 6. Create SQLAlchemy ORM models
   - Define User model with relationships to CartItem and Order
   - Define Category model with relationship to Product
   - Define Product model with relationships to Category, CartItem, and OrderItem
@@ -121,7 +121,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - Configure cascading deletes and lazy loading strategies
   - _Requirements: 19.1-19.15_
 
-- [ ] 7. Create Pydantic schemas for request/response validation
+- [~] 7. Create Pydantic schemas for request/response validation
   - Create UserCreate, UserResponse, LoginRequest, LoginResponse schemas
   - Create ProductCreate, ProductUpdate, ProductResponse, ProductListResponse schemas
   - Create CartItemCreate, CartItemUpdate, CartResponse schemas
@@ -135,7 +135,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 ### Phase 3: Backend Core Services
 
 - [ ] 8. Implement authentication and authorization services
-  - [ ] 8.1 Create password hashing service
+  - [-] 8.1 Create password hashing service
     - Implement hash_password() using passlib with bcrypt (cost factor 12)
     - Implement verify_password() with constant-time comparison
     - Validate password minimum length (8 characters)
@@ -148,7 +148,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - For any password, bcrypt hash should be exactly 60 characters and start with "$2b$12$"
     - Hashing the same password twice should produce different results (unique salts)
   
-  - [ ] 8.3 Create JWT token service
+  - [-] 8.3 Create JWT token service
     - Implement generate_token(user_id, email, role) with HS256 algorithm
     - Set token expiration to 7 days from issuance
     - Retrieve JWT secret from AWS Secrets Manager
@@ -163,7 +163,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - For any valid JWT token, protected endpoints should accept it
     - For expired or invalid tokens, endpoints should reject with appropriate error
   
-  - [ ] 8.5 Create authentication dependencies
+  - [-] 8.5 Create authentication dependencies
     - Implement get_current_user() dependency to extract user from JWT token
     - Implement require_admin() dependency to verify role='ADMIN'
     - Implement require_customer() dependency to verify role='CUSTOMER'
@@ -233,7 +233,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - Each item subtotal should equal price × quantity
 
 - [ ] 12. Implement order service layer
-  - [ ] 12.1 Create order number generation function
+  - [-] 12.1 Create order number generation function
     - Generate format: "CC{YYYYMMDD}{sequence}"
     - Query for latest order_number with same date prefix
     - Increment sequence or start at 001
@@ -247,7 +247,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Sequence is 3-digit zero-padded number
     - All order numbers should be unique
   
-  - [ ] 12.3 Implement create_order(user_id, delivery_address) with atomic transaction
+  - [~] 12.3 Implement create_order(user_id, delivery_address) with atomic transaction
     - Begin database transaction
     - Fetch user's cart items with product details
     - Validate cart is not empty
@@ -273,14 +273,14 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - **Validates: Requirements 8.5**
     - For any cart, when creating order, order.total_amount should equal sum of (Cart_Item.product.price × Cart_Item.quantity) for all items
   
-  - [ ] 12.6 Implement get_user_orders(user_id, filters, pagination)
+  - [~] 12.6 Implement get_user_orders(user_id, filters, pagination)
     - Filter by user_id for customer access
     - Support filtering by status
     - Support pagination
     - Include order items, delivery address, and product details
     - _Requirements: 9.1-9.6_
   
-  - [ ] 12.7 Implement get_order_by_id(order_id, user_id) with authorization
+  - [~] 12.7 Implement get_order_by_id(order_id, user_id) with authorization
     - Verify user_id matches order owner (for customers)
     - Return complete order details
     - _Requirements: 9.4, 9.6_
@@ -307,7 +307,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 ### Phase 4: Backend API Endpoints
 
 - [ ] 14. Implement authentication API endpoints
-  - [ ] 14.1 POST /auth/register - Customer registration
+  - [~] 14.1 POST /auth/register - Customer registration
     - Validate email format and password length (>= 8)
     - Check for duplicate email (return 409 Conflict if exists)
     - Hash password with bcrypt
@@ -326,7 +326,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - **Validates: Requirement 1.2**
     - For any user already registered with an email, attempting to register another user with same email should be rejected with conflict error
   
-  - [ ] 14.4 POST /auth/login - User login
+  - [~] 14.4 POST /auth/login - User login
     - Validate email and password provided
     - Query user by email
     - Verify password using bcrypt
@@ -334,17 +334,17 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Return 401 Unauthorized on invalid credentials
     - _Requirements: 2.1-2.6_
   
-  - [ ] 14.5 POST /auth/logout - Client-side token removal
+  - [~] 14.5 POST /auth/logout - Client-side token removal
     - Optional endpoint (stateless JWT, client handles logout)
     - _Requirements: 27.4_
   
-  - [ ] 14.6 GET /auth/me - Get current user profile
+  - [~] 14.6 GET /auth/me - Get current user profile
     - Require JWT authentication
     - Return current user details from token
     - _Requirements: 2.4_
 
 - [ ] 15. Implement public product API endpoints
-  - [ ] 15.1 GET /products - List products with filters
+  - [~] 15.1 GET /products - List products with filters
     - Accept query params: page, limit, search, brand, series, category, min_price, max_price, in_stock, sort_by
     - Validate pagination params (page >= 1, limit <= 100)
     - Filter by is_active=TRUE for public access
@@ -366,24 +366,24 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - **Validates: Requirements 4.6, 28.1**
     - For any product set, filtering by in_stock=TRUE should return only products with Stock_Quantity > 0
   
-  - [ ] 15.4 GET /products/:id - Get product details
+  - [~] 15.4 GET /products/:id - Get product details
     - Return complete product information including both image URLs
     - Include category details
     - Show stock availability status
     - _Requirements: 5.1-5.5_
   
-  - [ ] 15.5 GET /categories - List all categories
+  - [~] 15.5 GET /categories - List all categories
     - Return categories with product_count
     - _Requirements: 14.1-14.2_
 
 - [ ] 16. Implement customer cart API endpoints
-  - [ ] 16.1 GET /cart - Get current user's cart
+  - [~] 16.1 GET /cart - Get current user's cart
     - Require CUSTOMER authentication
     - Return cart items with product details, quantities, and subtotals
     - Calculate and return cart total
     - _Requirements: 6.8, 7.1_
   
-  - [ ] 16.2 POST /cart/items - Add item to cart
+  - [~] 16.2 POST /cart/items - Add item to cart
     - Require CUSTOMER authentication
     - Validate product exists and is active
     - Validate stock_quantity >= requested quantity
@@ -392,27 +392,27 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Return updated cart
     - _Requirements: 6.1-6.3_
   
-  - [ ] 16.3 PATCH /cart/items/:id - Update cart item quantity
+  - [~] 16.3 PATCH /cart/items/:id - Update cart item quantity
     - Require CUSTOMER authentication
     - Validate new quantity against stock_quantity
     - Update cart item quantity
     - Return updated cart
     - _Requirements: 6.3-6.4_
   
-  - [ ] 16.4 DELETE /cart/items/:id - Remove cart item
+  - [~] 16.4 DELETE /cart/items/:id - Remove cart item
     - Require CUSTOMER authentication
     - Delete cart item
     - Return updated cart
     - _Requirements: 6.5_
   
-  - [ ] 16.5 DELETE /cart - Clear entire cart
+  - [~] 16.5 DELETE /cart - Clear entire cart
     - Require CUSTOMER authentication
     - Delete all cart items for user
     - Return empty cart
     - _Requirements: 6.6_
 
 - [ ] 17. Implement customer order API endpoints
-  - [ ] 17.1 POST /orders - Create order from cart
+  - [~] 17.1 POST /orders - Create order from cart
     - Require CUSTOMER authentication
     - Validate delivery address (all required fields present)
     - Validate cart is not empty
@@ -426,14 +426,14 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - **Validates: Requirements 8.1, 29.1-29.6**
     - For any checkout submission, if Delivery_Address is missing required field, checkout should be rejected
   
-  - [ ] 17.2 GET /orders - Get customer's order history
+  - [~] 17.2 GET /orders - Get customer's order history
     - Require CUSTOMER authentication
     - Filter by user_id automatically
     - Support pagination and status filtering
     - Return order list with summary details
     - _Requirements: 9.1-9.3_
   
-  - [ ] 17.3 GET /orders/:id - Get order details
+  - [~] 17.3 GET /orders/:id - Get order details
     - Require CUSTOMER authentication
     - Verify order belongs to authenticated user
     - Return complete order with items, delivery address, and status
@@ -441,7 +441,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - _Requirements: 9.4-9.6_
 
 - [ ] 18. Implement admin product management API endpoints
-  - [ ] 18.1 POST /admin/products - Create product
+  - [~] 18.1 POST /admin/products - Create product
     - Require ADMIN authentication
     - Accept multipart form-data with product fields and two image files
     - Validate both front_package_image and back_package_image provided
@@ -454,7 +454,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Handle S3 upload failures with cleanup
     - _Requirements: 10.1-10.13_
   
-  - [ ] 18.2 PATCH /admin/products/:id - Update product
+  - [~] 18.2 PATCH /admin/products/:id - Update product
     - Require ADMIN authentication
     - Accept multipart form-data with optional product fields and optional image files
     - If new images provided, upload to S3 and update URLs
@@ -464,14 +464,14 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Return updated product
     - _Requirements: 11.1-11.4_
   
-  - [ ] 18.3 DELETE /admin/products/:id - Soft delete product
+  - [~] 18.3 DELETE /admin/products/:id - Soft delete product
     - Require ADMIN authentication
     - Set is_active=FALSE (soft delete)
     - Update updated_at timestamp
     - Return success response
     - _Requirements: 11.5-11.7_
   
-  - [ ] 18.4 GET /admin/products - Admin product listing
+  - [~] 18.4 GET /admin/products - Admin product listing
     - Require ADMIN authentication
     - Include both active and inactive products
     - Support same filters as public listing
@@ -479,7 +479,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - _Requirements: 11.7_
 
 - [ ] 19. Implement admin order management API endpoints
-  - [ ] 19.1 GET /admin/orders - List all orders
+  - [~] 19.1 GET /admin/orders - List all orders
     - Require ADMIN authentication
     - Support filtering by status, date_from, date_to
     - Support search by order_number or customer name
@@ -487,12 +487,12 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Include customer information in response
     - _Requirements: 12.1-12.4_
   
-  - [ ] 19.2 GET /admin/orders/:id - Get order details
+  - [~] 19.2 GET /admin/orders/:id - Get order details
     - Require ADMIN authentication
     - Return complete order with customer info, items, and delivery address
     - _Requirements: 12.5_
   
-  - [ ] 19.3 PATCH /admin/orders/:id/status - Update order status
+  - [~] 19.3 PATCH /admin/orders/:id/status - Update order status
     - Require ADMIN authentication
     - Validate status transition is allowed
     - Call order service update_order_status()
@@ -501,7 +501,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Return 400 Bad Request for invalid transitions with allowed states
     - _Requirements: 12.6-12.12_
 
-- [ ] 20. Implement admin dashboard API endpoint
+- [~] 20. Implement admin dashboard API endpoint
   - GET /admin/dashboard/stats - Get dashboard statistics
   - Require ADMIN authentication
   - Calculate total_products count
@@ -513,7 +513,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - Fetch recent orders (latest 10)
   - _Requirements: 13.1-13.7_
 
-- [ ] 21. Implement global error handling middleware
+- [~] 21. Implement global error handling middleware
   - Catch validation errors (Pydantic) → 400 Bad Request
   - Catch authentication errors → 401 Unauthorized
   - Catch authorization errors → 403 Forbidden
@@ -524,7 +524,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - Log errors to CloudWatch (sanitize sensitive data)
   - _Requirements: 22.1-22.8_
 
-- [ ] 22. Checkpoint - Backend API testing and validation
+- [~] 22. Checkpoint - Backend API testing and validation
   - Run all backend unit tests (pytest)
   - Run all property-based tests (Hypothesis)
   - Test all API endpoints with Postman or Thunder Client
@@ -537,7 +537,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 
 ### Phase 5: Frontend Core Setup
 
-- [ ] 23. Configure frontend routing structure
+- [~] 23. Configure frontend routing structure
   - Set up React Router v6 with BrowserRouter
   - Create route definitions for public, customer, and admin routes
   - Implement ProtectedRoute component for customer routes
@@ -547,25 +547,25 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - _Requirements: 3.2, 3.3_
 
 - [ ] 24. Implement Zustand state management stores
-  - [ ] 24.1 Create authStore
+  - [~] 24.1 Create authStore
     - State: user (User | null), token (string | null), isAuthenticated (boolean)
     - Actions: login(email, password), logout(), register(data)
     - Persist token in localStorage
     - Handle token expiration and auto-logout
     - _Requirements: 1.1-1.7, 2.1-2.6, 27.1-27.5_
   
-  - [ ] 24.2 Create cartStore
+  - [~] 24.2 Create cartStore
     - State: items (CartItem[]), total (number)
     - Actions: fetchCart(), addItem(productId, quantity), updateQuantity(itemId, quantity), removeItem(itemId), clearCart()
     - Handle stock validation errors from API
     - _Requirements: 6.1-6.9_
   
-  - [ ] 24.3 Create uiStore
+  - [~] 24.3 Create uiStore
     - State: isLoading (boolean), error (string | null), successMessage (string | null)
     - Actions: setLoading(), setError(), clearError(), setSuccess()
     - Used for global UI feedback
 
-- [ ] 25. Create API service layer with Axios
+- [~] 25. Create API service layer with Axios
   - Configure Axios base URL and timeout
   - Create axios instance with request interceptor to add JWT token
   - Create response interceptor for 401 handling (auto-logout and redirect)
@@ -576,7 +576,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - Create adminApi.ts: createProduct(formData), updateProduct(id, formData), deleteProduct(id), getAdminProducts(filters), getAdminOrders(filters), updateOrderStatus(id, status), getDashboardStats()
   - _Requirements: 1.1-30.7_
 
-- [ ] 26. Create TypeScript type definitions
+- [~] 26. Create TypeScript type definitions
   - Define User, Product, Category, CartItem, Cart, Order, OrderItem, DeliveryAddress interfaces
   - Define PaginationParams, PaginationMeta, ProductFilterParams interfaces
   - Define API response types
@@ -584,7 +584,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - Ensure type safety across all components and API calls
   - _Requirements: All requirements_
 
-- [ ] 27. Implement utility functions
+- [~] 27. Implement utility functions
   - Create formatPrice(amount) for currency formatting (₹)
   - Create formatDate(timestamp) for date display
   - Create validators for email, password, mobile number
@@ -594,39 +594,39 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 ### Phase 6: Frontend Components - Common
 
 - [ ] 28. Create common UI components
-  - [ ] 28.1 Button component
+  - [~] 28.1 Button component
     - Support variants: primary (Electric Blue), secondary (Deep Navy), accent (KTM Orange)
     - Support sizes: small, medium, large
     - Support disabled and loading states
     - Apply premium hover effects
     - _Requirements: 21.1-21.7_
   
-  - [ ] 28.2 Input component
+  - [~] 28.2 Input component
     - Support text, email, password, number types
     - Display validation errors below input
     - Apply Deep Navy background with blue borders
     - Support disabled state
     - _Requirements: 21.1-21.7_
   
-  - [ ] 28.3 Modal component
+  - [~] 28.3 Modal component
     - Overlay with centered content
     - Close on overlay click or X button
     - Trap focus inside modal
     - Apply premium styling
     - _Requirements: 21.1-21.7_
   
-  - [ ] 28.4 LoadingSpinner component
+  - [~] 28.4 LoadingSpinner component
     - Animated spinner with Electric Blue color
     - Support different sizes
     - _Requirements: 21.1-21.7_
   
-  - [ ] 28.5 ErrorBoundary component
+  - [~] 28.5 ErrorBoundary component
     - Catch React errors and display fallback UI
     - Log errors for debugging
     - _Requirements: 22.1-22.8_
 
 - [ ] 29. Create layout components
-  - [ ] 29.1 Header component
+  - [~] 29.1 Header component
     - Display CAR COLLECTORS logo and tagline
     - Navigation links (Home, Products, About)
     - Cart icon with item count badge (authenticated customers)
@@ -635,17 +635,17 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Apply Deep Navy background with Electric Blue accents
     - _Requirements: 20.2-20.3, 21.1-21.7_
   
-  - [ ] 29.2 Footer component
+  - [~] 29.2 Footer component
     - Display copyright, social links, contact info
     - Apply Deep Navy background
     - _Requirements: 21.1-21.7_
   
-  - [ ] 29.3 Navigation component
+  - [~] 29.3 Navigation component
     - Horizontal nav for desktop, hamburger for mobile
     - Highlight active route
     - _Requirements: 20.2-20.3_
   
-  - [ ] 29.4 AdminSidebar component
+  - [~] 29.4 AdminSidebar component
     - Vertical sidebar with links to Dashboard, Products, Orders
     - Highlight active section
     - Display admin user name
@@ -655,7 +655,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 ### Phase 7: Frontend Components - Product Catalog
 
 - [ ] 30. Create product-related components
-  - [ ] 30.1 ProductCard component
+  - [~] 30.1 ProductCard component
     - Display product image (front_package_image_url)
     - Show product name, brand, series
     - Display price in KTM Orange (₹)
@@ -666,13 +666,13 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Support responsive grid layout (1 column mobile, 2 tablet, 4 desktop)
     - _Requirements: 4.1-4.10, 21.1-21.7, 28.2-28.3_
   
-  - [ ] 30.2 ProductGrid component
+  - [~] 30.2 ProductGrid component
     - Render array of ProductCard components
     - Apply responsive grid layout
     - Handle empty state ("No products found")
     - _Requirements: 20.1_
   
-  - [ ] 30.3 ProductFilters component
+  - [~] 30.3 ProductFilters component
     - Search input for text search
     - Brand dropdown filter
     - Category dropdown filter
@@ -683,13 +683,13 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Responsive layout (stack vertically on mobile)
     - _Requirements: 4.2-4.7_
   
-  - [ ] 30.4 ProductSearch component
+  - [~] 30.4 ProductSearch component
     - Search input with icon
     - Debounce input for performance
     - Clear button when text entered
     - _Requirements: 4.2_
   
-  - [ ] 30.5 ImageToggle component
+  - [~] 30.5 ImageToggle component
     - Display main image (front or back) in square aspect ratio
     - Toggle buttons: "Front Package" and "Back Package"
     - Active button highlighted with Electric Blue
@@ -699,7 +699,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - _Requirements: 5.2, 30.1-30.7_
 
 - [ ] 31. Create product pages
-  - [ ] 31.1 ProductListingPage
+  - [~] 31.1 ProductListingPage
     - Render ProductFilters, ProductSearch, ProductGrid components
     - Fetch products from API with filters and pagination
     - Display pagination controls (Previous, Page X of Y, Next)
@@ -708,7 +708,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Update URL query params when filters change
     - _Requirements: 4.1-4.10, 23.1-23.7_
   
-  - [ ] 31.2 ProductDetailsPage
+  - [~] 31.2 ProductDetailsPage
     - Fetch product details by ID from route params
     - Render ImageToggle component for dual images
     - Display full product information (name, brand, series, model, description, price, scale, material)
@@ -723,7 +723,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 ### Phase 8: Frontend Components - Cart and Checkout
 
 - [ ] 32. Create cart-related components
-  - [ ] 32.1 CartItem component
+  - [~] 32.1 CartItem component
     - Display product image, name, brand
     - Show unit price and subtotal
     - Quantity selector with +/- buttons
@@ -732,21 +732,21 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Show stock validation errors
     - _Requirements: 6.3-6.5_
   
-  - [ ] 32.2 CartSummary component
+  - [~] 32.2 CartSummary component
     - Display cart total prominently (KTM Orange)
     - List all items with quantities
     - Proceed to Checkout button
     - Continue Shopping link
     - _Requirements: 6.8_
   
-  - [ ] 32.3 CartIcon component
+  - [~] 32.3 CartIcon component
     - Shopping cart icon in header
     - Badge showing item count
     - Click to navigate to cart page
     - _Requirements: 20.6_
 
 - [ ] 33. Create cart and checkout pages
-  - [ ] 33.1 CartPage
+  - [~] 33.1 CartPage
     - Fetch cart from API on mount
     - Render list of CartItem components
     - Display CartSummary component
@@ -755,7 +755,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Handle loading and error states
     - _Requirements: 6.1-6.9, 7.1-7.5_
   
-  - [ ] 33.2 CheckoutPage
+  - [~] 33.2 CheckoutPage
     - Fetch cart to validate before checkout
     - Display cart summary (read-only)
     - DeliveryAddressForm with all required fields
@@ -766,7 +766,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Handle loading state during order creation
     - _Requirements: 8.1-8.13, 29.1-29.7_
   
-  - [ ] 33.3 DeliveryAddressForm component
+  - [~] 33.3 DeliveryAddressForm component
     - Inputs: full_name, mobile, address_line, city, state, pincode
     - Validate all fields required
     - Validate mobile number format
@@ -777,7 +777,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 ### Phase 9: Frontend Components - Orders
 
 - [ ] 34. Create order-related components
-  - [ ] 34.1 OrderCard component
+  - [~] 34.1 OrderCard component
     - Display order_number, date, total_amount
     - Show OrderStatusBadge
     - Display item count
@@ -785,14 +785,14 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Apply card styling with hover effect
     - _Requirements: 9.1-9.6_
   
-  - [ ] 34.2 OrderStatusBadge component
+  - [~] 34.2 OrderStatusBadge component
     - Display status with color coding
     - PENDING: yellow, CONFIRMED: blue, PACKED: purple, OUT_FOR_DELIVERY: orange, DELIVERED: green, CANCELLED: red
     - Apply badge styling with rounded corners
     - _Requirements: 9.1-9.6_
 
 - [ ] 35. Create order pages
-  - [ ] 35.1 OrderHistoryPage
+  - [~] 35.1 OrderHistoryPage
     - Require CUSTOMER authentication
     - Fetch user's orders from API
     - Display list of OrderCard components
@@ -802,7 +802,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Handle loading and error states
     - _Requirements: 9.1-9.3_
   
-  - [ ] 35.2 OrderDetailsPage
+  - [~] 35.2 OrderDetailsPage
     - Require CUSTOMER authentication
     - Fetch order details by ID from route params
     - Display order_number, date, OrderStatusBadge
@@ -817,7 +817,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 ### Phase 10: Frontend Components - Authentication
 
 - [ ] 36. Create authentication pages
-  - [ ] 36.1 LoginPage
+  - [~] 36.1 LoginPage
     - Email and password inputs
     - Form validation (email format, password required)
     - Submit to authStore.login()
@@ -827,7 +827,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Apply premium form styling
     - _Requirements: 2.1-2.6_
   
-  - [ ] 36.2 RegisterPage
+  - [~] 36.2 RegisterPage
     - Inputs: email, password, confirm password, full_name, mobile (optional)
     - Form validation (email format, password >= 8 chars, passwords match)
     - Submit to authStore.register()
@@ -837,7 +837,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Apply premium form styling
     - _Requirements: 1.1-1.7_
   
-  - [ ] 36.3 ProfilePage
+  - [~] 36.3 ProfilePage
     - Require CUSTOMER authentication
     - Display current user profile (email, full_name, mobile)
     - Edit profile button (future feature - MVP just displays)
@@ -847,7 +847,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 ### Phase 11: Frontend Components - Admin Dashboard
 
 - [ ] 37. Create admin dashboard components and pages
-  - [ ] 37.1 DashboardPage
+  - [~] 37.1 DashboardPage
     - Require ADMIN authentication
     - Fetch dashboard stats from API
     - Display statistics cards: Total Products, Total Stock, Orders by Status, Revenue (Total, This Month, This Week)
@@ -856,7 +856,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Handle loading and error states
     - _Requirements: 13.1-13.7_
   
-  - [ ] 37.2 ProductListPage (Admin)
+  - [~] 37.2 ProductListPage (Admin)
     - Require ADMIN authentication
     - Fetch admin products (include inactive)
     - Display products table with image, name, brand, price, stock, is_active, actions
@@ -867,7 +867,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Handle loading and error states
     - _Requirements: 11.7_
   
-  - [ ] 37.3 ProductFormPage (Admin)
+  - [~] 37.3 ProductFormPage (Admin)
     - Require ADMIN authentication
     - Support both create and edit modes (based on route params)
     - Form fields: name, brand, series, model, category_id, description, price, stock_quantity, scale, material
@@ -880,7 +880,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Handle loading state during submission
     - _Requirements: 10.1-10.13, 11.1-11.4_
   
-  - [ ] 37.4 OrderManagementPage (Admin)
+  - [~] 37.4 OrderManagementPage (Admin)
     - Require ADMIN authentication
     - Fetch all orders from API
     - Display orders table with order_number, customer, status, total_amount, date, actions
@@ -895,7 +895,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 ### Phase 12: Frontend Pages - Public
 
 - [ ] 38. Create public pages
-  - [ ] 38.1 HomePage
+  - [~] 38.1 HomePage
     - Hero section with CAR COLLECTORS branding and tagline
     - Featured products section (latest or popular)
     - Categories section with links
@@ -903,14 +903,14 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Apply premium design with hero image/gradient background
     - _Requirements: 21.1-21.7_
   
-  - [ ] 38.2 AboutPage
+  - [~] 38.2 AboutPage
     - About CAR COLLECTORS platform
     - Mission statement for die-cast collectors
     - Contact information
     - Apply premium styling
     - _Requirements: 21.1-21.7_
   
-  - [ ] 38.3 NotFoundPage
+  - [~] 38.3 NotFoundPage
     - 404 error message
     - Link back to home
     - Apply premium styling
@@ -918,7 +918,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 
 ### Phase 13: Frontend Styling and Responsiveness
 
-- [ ] 39. Implement Tailwind CSS custom theme
+- [~] 39. Implement Tailwind CSS custom theme
   - Configure tailwind.config.js with CAR COLLECTORS colors
   - Deep Navy: #0f172a (navy-900), #1e293b (navy-800), #334155 (navy-700)
   - Electric Blue: #2563eb (blue-600), #3b82f6 (blue-500), #60a5fa (blue-400)
@@ -927,7 +927,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - Set up responsive breakpoints: sm (640px), md (768px), lg (1024px), xl (1280px)
   - _Requirements: 21.1-21.7_
 
-- [ ] 40. Implement responsive design for all components
+- [~] 40. Implement responsive design for all components
   - Product grid: 1 column (mobile), 2 columns (tablet), 4 columns (desktop)
   - Navigation: hamburger menu (mobile), horizontal nav (desktop)
   - Forms: stack inputs vertically (mobile), 2-column layout (desktop)
@@ -936,7 +936,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - Test all pages on mobile, tablet, and desktop viewports
   - _Requirements: 20.1-20.7_
 
-- [ ] 41. Implement lazy loading for images and routes
+- [~] 41. Implement lazy loading for images and routes
   - Use React.lazy() for route-based code splitting
   - Use react-lazy-load-image-component for product images
   - Set up Suspense fallback with LoadingSpinner
@@ -944,7 +944,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 
 ### Phase 14: Testing
 
-- [ ] 42. Write frontend unit tests
+- [~] 42. Write frontend unit tests
   - Test authStore actions (login, logout, register)
   - Test cartStore actions (addItem, updateQuantity, removeItem)
   - Test Button, Input, Modal components rendering
@@ -955,7 +955,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - _Requirements: All frontend requirements_
 
 - [ ] 43. Write frontend integration tests with Cypress
-  - [ ] 43.1 Customer journey test
+  - [~] 43.1 Customer journey test
     - Register new account
     - Login
     - Browse products and apply filters
@@ -966,7 +966,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - View order in order history
     - _Requirements: 1.1-9.6_
   
-  - [ ] 43.2 Admin journey test
+  - [~] 43.2 Admin journey test
     - Login as admin
     - View dashboard
     - Create new product with image uploads
@@ -976,13 +976,13 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
     - Update order status through workflow
     - _Requirements: 3.1-13.7_
   
-  - [ ] 43.3 Error scenarios test
+  - [~] 43.3 Error scenarios test
     - Out-of-stock handling during checkout
     - Validation errors (login, registration, forms)
     - Unauthorized access attempts
     - _Requirements: 22.1-22.8_
 
-- [ ] 44. Checkpoint - Full system testing
+- [~] 44. Checkpoint - Full system testing
   - Run all backend unit tests and property tests
   - Run all frontend unit tests
   - Run all Cypress E2E tests
@@ -994,7 +994,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
 
 ### Phase 15: Deployment and DevOps
 
-- [ ] 45. Set up database deployment
+- [~] 45. Set up database deployment
   - Run Alembic migrations on production RDS instance
   - Seed initial categories data
   - Create initial admin user account
@@ -1002,7 +1002,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - Configure automated backups (RDS daily snapshots)
   - _Requirements: 19.1-19.15_
 
-- [ ] 46. Deploy backend to AWS
+- [~] 46. Deploy backend to AWS
   - Dockerize FastAPI application
   - Push Docker image to AWS ECR
   - Set up ECS cluster with Fargate tasks
@@ -1014,7 +1014,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - Test backend API endpoints via ALB
   - _Requirements: All backend requirements_
 
-- [ ] 47. Deploy frontend to AWS
+- [~] 47. Deploy frontend to AWS
   - Build React application for production (npm run build)
   - Create S3 bucket for static hosting
   - Configure S3 bucket for website hosting
@@ -1026,7 +1026,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - Test frontend via CloudFront URL
   - _Requirements: All frontend requirements_
 
-- [ ] 48. Configure CI/CD pipeline
+- [~] 48. Configure CI/CD pipeline
   - Set up GitHub Actions or AWS CodePipeline
   - Backend pipeline: lint, test, build Docker image, deploy to ECS
   - Frontend pipeline: lint, test, build, deploy to S3, invalidate CloudFront cache
@@ -1034,7 +1034,7 @@ This document provides a comprehensive implementation roadmap for the CAR COLLEC
   - Set up deployment notifications (Slack/email)
   - _Requirements: DevOps best practices_
 
-- [ ] 49. Final production verification
+- [~] 49. Final production verification
   - Verify all API endpoints working in production
   - Verify all frontend pages loading correctly
   - Verify image uploads to S3 and CloudFront delivery

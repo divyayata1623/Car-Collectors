@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { productsAPI } from '../../api';
+import { productsAPI, adminAPI } from '../../api';
+import { resolveImageUrl } from '../../api/client';
 import type { Product } from '../../types';
 
 type FilterTab = 'all' | 'low' | 'out';
@@ -11,6 +11,9 @@ export const AdminInventoryPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<FilterTab>('all');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [editingStockId, setEditingStockId] = useState<string | null>(null);
+  const [stockDraft, setStockDraft] = useState('');
+  const [isSavingStock, setIsSavingStock] = useState(false);
 
   useEffect(() => {
     loadProducts();
@@ -25,9 +28,14 @@ export const AdminInventoryPage: React.FC = () => {
     setError('');
     try {
       // Load all products (we'll paginate in a real app)
-      const response = await productsAPI.getProducts({ limit: 1000 });
-      setProducts(response.data.products);
-      setFilteredProducts(response.data.products);
+      const response = await productsAPI.getProducts({ limit: 100 });
+      const normalizedProducts = response.data.products.map((product) => ({
+        ...product,
+        price: Number(product.price),
+        stock_quantity: Number(product.stock_quantity),
+      }));
+      setProducts(normalizedProducts);
+      setFilteredProducts(normalizedProducts);
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Failed to load inventory');
     } finally {
@@ -65,6 +73,28 @@ export const AdminInventoryPage: React.FC = () => {
     }
   };
 
+  const saveStock = async (product: Product) => {
+    const stockQuantity = Number(stockDraft);
+    if (!Number.isInteger(stockQuantity) || stockQuantity < 0) {
+      setError('Stock quantity must be a whole number of 0 or more.');
+      return;
+    }
+
+    setIsSavingStock(true);
+    setError('');
+    try {
+      await adminAPI.updateProduct(product.id, { stock_quantity: stockQuantity });
+      setProducts((current) => current.map((item) =>
+        item.id === product.id ? { ...item, stock_quantity: stockQuantity } : item
+      ));
+      setEditingStockId(null);
+    } catch (err: any) {
+      setError(err.response?.data?.detail || 'Failed to update stock.');
+    } finally {
+      setIsSavingStock(false);
+    }
+  };
+
   // Calculate stats
   const stats = {
     totalProducts: products.length,
@@ -94,64 +124,64 @@ export const AdminInventoryPage: React.FC = () => {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Inventory Management</h1>
-        <p className="text-gray-400">Monitor stock levels and inventory value</p>
+        <h1 className="text-4xl font-bold text-[#F5F7FA] mb-2 tracking-tight">Inventory</h1>
+        <p className="text-[#94A3B8]">Monitor stock levels and collection value.</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         {/* Total Products */}
-        <div className="bg-gradient-to-br from-blue-600/20 to-blue-800/20 rounded-2xl p-6 border border-gray-700/50">
+        <div className="bg-[#121923] rounded-xl p-6 border border-[#2E5BB4]/40">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-300 text-sm font-semibold mb-2">Total Products</p>
+              <p className="text-[#8390A5] text-xs uppercase tracking-wider font-semibold mb-2">Total Products</p>
               <p className="text-3xl font-bold text-white">{stats.totalProducts}</p>
             </div>
-            <div className="text-4xl opacity-50">📦</div>
+            <svg className="w-10 h-10 text-[#4F86F7]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
           </div>
         </div>
 
         {/* Total Stock */}
-        <div className="bg-gradient-to-br from-green-600/20 to-green-800/20 rounded-2xl p-6 border border-gray-700/50">
+        <div className="bg-[#121923] rounded-xl p-6 border border-green-500/20">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-300 text-sm font-semibold mb-2">Total Stock</p>
+              <p className="text-[#8390A5] text-xs uppercase tracking-wider font-semibold mb-2">Total Stock</p>
               <p className="text-3xl font-bold text-white">{stats.totalStock}</p>
             </div>
-            <div className="text-4xl opacity-50">📊</div>
+            <svg className="w-10 h-10 text-green-400/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 19V5m0 14h16M8 16v-5m4 5V8m4 8v-9" /></svg>
           </div>
         </div>
 
         {/* Low Stock */}
-        <div className="bg-gradient-to-br from-yellow-600/20 to-yellow-800/20 rounded-2xl p-6 border border-gray-700/50">
+        <div className="bg-[#121923] rounded-xl p-6 border border-yellow-500/20">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-300 text-sm font-semibold mb-2">Low Stock</p>
+              <p className="text-[#8390A5] text-xs uppercase tracking-wider font-semibold mb-2">Low Stock</p>
               <p className="text-3xl font-bold text-white">{stats.lowStock}</p>
             </div>
-            <div className="text-4xl opacity-50">⚠️</div>
+            <svg className="w-10 h-10 text-yellow-400/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4a2 2 0 00-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z" /></svg>
           </div>
         </div>
 
         {/* Out of Stock */}
-        <div className="bg-gradient-to-br from-red-600/20 to-red-800/20 rounded-2xl p-6 border border-gray-700/50">
+        <div className="bg-[#121923] rounded-xl p-6 border border-red-500/20">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-300 text-sm font-semibold mb-2">Out of Stock</p>
+              <p className="text-[#8390A5] text-xs uppercase tracking-wider font-semibold mb-2">Out of Stock</p>
               <p className="text-3xl font-bold text-white">{stats.outOfStock}</p>
             </div>
-            <div className="text-4xl opacity-50">🚫</div>
+            <svg className="w-10 h-10 text-red-400/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" strokeWidth={1.5} /><path strokeLinecap="round" strokeWidth={1.5} d="M8 8l8 8" /></svg>
           </div>
         </div>
 
         {/* Total Value */}
-        <div className="bg-gradient-to-br from-orange-600/20 to-orange-800/20 rounded-2xl p-6 border border-gray-700/50">
+        <div className="bg-[#121923] rounded-xl p-6 border border-[#F26A21]/30">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-300 text-sm font-semibold mb-2">Inventory Value</p>
+              <p className="text-[#8390A5] text-xs uppercase tracking-wider font-semibold mb-2">Inventory Value</p>
               <p className="text-3xl font-bold text-white">₹{(stats.totalValue / 1000).toFixed(0)}K</p>
             </div>
-            <div className="text-4xl opacity-50">💰</div>
+            <svg className="w-10 h-10 text-[#F26A21]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 3v18m4-14.5c-.6-.9-1.8-1.5-4-1.5-2.5 0-4 1.1-4 2.8 0 4.2 8 2.1 8 6.2 0 1.7-1.5 3-4 3-2.1 0-3.5-.6-4.2-1.7" /></svg>
           </div>
         </div>
       </div>
@@ -218,7 +248,7 @@ export const AdminInventoryPage: React.FC = () => {
                       <td className="px-6 py-4">
                         <div className="flex items-center space-x-3">
                           <img
-                            src={product.front_package_image_url}
+                            src={resolveImageUrl(product.front_package_image_url)}
                             alt={product.name}
                             className="w-12 h-12 object-cover rounded-lg"
                           />
@@ -254,12 +284,26 @@ export const AdminInventoryPage: React.FC = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <Link
-                          to={`/admin/products/${product.id}/edit`}
-                          className="text-blue-400 hover:text-blue-300 font-semibold text-sm"
-                        >
-                          Update Stock →
-                        </Link>
+                        {editingStockId === product.id ? (
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="number"
+                              min="0"
+                              value={stockDraft}
+                              onChange={(event) => setStockDraft(event.target.value)}
+                              className="w-20 bg-[#080D16] border border-white/10 rounded-lg px-2 py-1.5 text-white focus:outline-none focus:border-[#4F86F7]"
+                            />
+                            <button onClick={() => saveStock(product)} disabled={isSavingStock} className="text-green-300 hover:text-green-200 text-sm font-semibold disabled:opacity-50">Save</button>
+                            <button onClick={() => setEditingStockId(null)} disabled={isSavingStock} className="text-[#94A3B8] hover:text-white text-sm">Cancel</button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => { setEditingStockId(product.id); setStockDraft(String(product.stock_quantity)); }}
+                            className="text-[#4F86F7] hover:text-blue-300 font-semibold text-sm"
+                          >
+                            Update Stock
+                          </button>
+                        )}
                       </td>
                     </tr>
                   );

@@ -9,16 +9,26 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import os
+from dotenv import load_dotenv
 
 from models.user import User
 from schemas.user import UserCreate
 from database import get_db
 
+load_dotenv()
+
 # Password hashing context with bcrypt cost factor 12
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto", bcrypt__rounds=12)
 
 # JWT configuration from environment variables
-SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-here-min-32-characters-long")
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY or len(SECRET_KEY) < 32 or SECRET_KEY.lower().startswith(
+    ("your_", "replace_", "change_")
+):
+    raise RuntimeError(
+        "SECRET_KEY must be a non-placeholder value of at least 32 characters."
+    )
+
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_DAYS = int(os.getenv("ACCESS_TOKEN_EXPIRE_DAYS", "7"))
 
@@ -181,77 +191,8 @@ class AuthService:
         return db_user
 
 
-# Dependency functions for FastAPI route protection
-
-def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    db: Session = Depends(get_db)
-) -> User:
-    """
-    FastAPI dependency to get current authenticated user from JWT token.
-    
-    Args:
-        credentials: HTTP Bearer credentials from Authorization header
-        db: Database session
-        
-    Returns:
-        Current authenticated User object
-        
-    Raises:
-        HTTPException: If token is invalid or user not found
-    """
-    token = credentials.credentials
-    
-    # Decode token
-    try:
-        payload = AuthService.decode_token(token)
-        user_id: str = payload.get("sub")
-        
-        if user_id is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token payload",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-    except HTTPException:
-        raise
-    
-    # Get user from database
-    user = db.query(User).filter(User.id == user_id).first()
-    
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User not found",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    
-    if not user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Inactive user account"
-        )
-    
-    return user
 
 
-def get_current_admin(current_user: User = Depends(get_current_user)) -> User:
-    """
-    FastAPI dependency to get current authenticated admin user.
-    
-    Args:
-        current_user: Current authenticated user from get_current_user dependency
-        
-    Returns:
-        Current authenticated admin User object
-        
-    Raises:
-        HTTPException: If user is not an admin
-    """
-    if current_user.role != "ADMIN":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Insufficient permissions. Admin role required."
-        )
-    
-    return current_user
+# Dependency functions have been moved to dependencies/auth.py
+
+

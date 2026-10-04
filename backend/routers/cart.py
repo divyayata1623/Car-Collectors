@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from decimal import Decimal
 
 from database import get_db
-from services.auth import get_current_user
+from dependencies.auth import get_current_user
 from services.cart import CartService
 from schemas.cart import CartItemCreate, CartItemUpdate, CartResponse, CartItemResponse
 from models.user import User

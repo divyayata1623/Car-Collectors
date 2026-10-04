@@ -1,8 +1,11 @@
 ﻿import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useCartStore } from '../store/cartStore';
 
 export const Navbar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const cart = useCartStore((state) => state.cart);
+  const cartCount = cart?.items.reduce((total, item) => total + item.quantity, 0) || 0;
 
   return (
     <nav className="bg-gradient-to-r from-gray-900 via-navy-900 to-gray-900 border-b border-gray-700/50 sticky top-0 z-50 backdrop-blur-xl shadow-2xl">
@@ -94,7 +97,7 @@ export const Navbar: React.FC = () => {
                 />
               </svg>
               <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-lg">
-                0
+                {cartCount}
               </span>
             </Link>
           </div>

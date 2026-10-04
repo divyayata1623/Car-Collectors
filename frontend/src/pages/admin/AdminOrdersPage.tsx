@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { adminAPI } from '../../api';
 import type { Order } from '../../types';
 
@@ -43,10 +44,19 @@ export const AdminOrdersPage: React.FC = () => {
       if (selectedStatus) params.status = selectedStatus;
       
       const response = await adminAPI.getAllOrders(params);
-      setFilteredOrders(response.data.orders);
+      const orders = response.data.orders.map((order) => ({
+        ...order,
+        total_amount: Number(order.total_amount),
+        items: order.items.map((item) => ({
+          ...item,
+          unit_price: Number(item.unit_price),
+          subtotal: Number(item.subtotal),
+        })),
+      }));
+      setFilteredOrders(orders);
       setTotalPages(response.data.pagination.total_pages);
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Failed to load orders');
+      setError(err.response?.data?.detail || 'Unable to load orders. Please sign in again.');
     } finally {
       setIsLoading(false);
     }
@@ -80,7 +90,13 @@ export const AdminOrdersPage: React.FC = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center h-96">
-        <div className="text-red-400 text-xl">{error}</div>
+        <div className="text-center max-w-md">
+          <div className="text-red-300 text-xl font-semibold mb-3">{error}</div>
+          <p className="text-[#94A3B8] text-sm mb-5">Your admin session may have expired or does not have administrator permissions.</p>
+          <Link to="/admin/login" className="inline-block bg-[#F26A21] hover:bg-[#FF7A31] text-white font-semibold px-5 py-2.5 rounded-lg transition-colors">
+            Sign in as admin
+          </Link>
+        </div>
       </div>
     );
   }
@@ -89,13 +105,13 @@ export const AdminOrdersPage: React.FC = () => {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Orders Management</h1>
-        <p className="text-gray-400">View and manage customer orders</p>
+        <h1 className="text-4xl font-bold text-[#F5F7FA] mb-2 tracking-tight">Orders</h1>
+        <p className="text-[#94A3B8]">Review customer orders and move them through fulfillment.</p>
       </div>
 
       {/* Status Filter */}
-      <div className="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl p-6 border border-gray-700/50">
-        <label className="block text-sm font-semibold text-gray-400 mb-2">
+      <div className="bg-[#121923] rounded-xl p-6 border border-[#242D38]">
+        <label className="block text-xs font-semibold text-[#8390A5] uppercase tracking-[0.16em] mb-2">
           Filter by Status
         </label>
         <select
@@ -104,7 +120,7 @@ export const AdminOrdersPage: React.FC = () => {
             setSelectedStatus(e.target.value);
             setPage(1);
           }}
-          className="w-full md:w-64 bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+          className="w-full md:w-64 bg-[#080D16] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#4F86F7]"
         >
           <option value="">All Orders</option>
           <option value="PENDING">Pending</option>
@@ -114,7 +130,7 @@ export const AdminOrdersPage: React.FC = () => {
           <option value="DELIVERED">Delivered</option>
           <option value="CANCELLED">Cancelled</option>
         </select>
-        <div className="mt-4 text-sm text-gray-400">
+        <div className="mt-4 text-sm text-[#94A3B8]">
           Showing {filteredOrders.length} orders
         </div>
       </div>
@@ -122,43 +138,43 @@ export const AdminOrdersPage: React.FC = () => {
       {/* Orders List */}
       <div className="space-y-4">
         {filteredOrders.length === 0 ? (
-          <div className="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl p-12 border border-gray-700/50 text-center text-gray-400">
+          <div className="bg-[#101827] rounded-xl p-12 border border-white/10 text-center text-[#94A3B8]">
             No orders found
           </div>
         ) : (
           filteredOrders.map((order) => (
             <div
               key={order.id}
-              className="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl border border-gray-700/50 overflow-hidden"
+              className="bg-[#101827] rounded-xl border border-white/10 overflow-hidden"
             >
               {/* Order Header */}
               <div
-                className="p-6 cursor-pointer hover:bg-gray-800/50 transition-all"
+                className="p-6 cursor-pointer hover:bg-white/[0.03] transition-all"
                 onClick={() => toggleOrderExpansion(order.id)}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1 grid grid-cols-1 md:grid-cols-5 gap-4">
                     {/* Order Number */}
                     <div>
-                      <div className="text-sm text-gray-400 mb-1">Order Number</div>
+                      <div className="text-xs text-[#8390A5] uppercase tracking-wider mb-1">Order Number</div>
                       <div className="text-white font-mono font-semibold">{order.order_number}</div>
                     </div>
 
                     {/* Customer */}
                     <div>
-                      <div className="text-sm text-gray-400 mb-1">Customer</div>
+                      <div className="text-xs text-[#8390A5] uppercase tracking-wider mb-1">Customer</div>
                       <div className="text-white">{order.delivery_address.full_name}</div>
                     </div>
 
                     {/* Total */}
                     <div>
-                      <div className="text-sm text-gray-400 mb-1">Total</div>
+                      <div className="text-xs text-[#8390A5] uppercase tracking-wider mb-1">Total</div>
                       <div className="text-white font-semibold">₹{order.total_amount.toLocaleString('en-IN')}</div>
                     </div>
 
                     {/* Status */}
                     <div>
-                      <div className="text-sm text-gray-400 mb-1">Status</div>
+                      <div className="text-xs text-[#8390A5] uppercase tracking-wider mb-1">Status</div>
                       <span className={`px-3 py-1 rounded-full text-xs font-bold ${STATUS_COLORS[order.status]}`}>
                         {order.status.replace(/_/g, ' ')}
                       </span>
@@ -166,7 +182,7 @@ export const AdminOrdersPage: React.FC = () => {
 
                     {/* Date */}
                     <div>
-                      <div className="text-sm text-gray-400 mb-1">Date</div>
+                      <div className="text-xs text-[#8390A5] uppercase tracking-wider mb-1">Date</div>
                       <div className="text-white">{new Date(order.created_at).toLocaleDateString()}</div>
                     </div>
                   </div>
@@ -180,11 +196,11 @@ export const AdminOrdersPage: React.FC = () => {
 
               {/* Expanded Details */}
               {expandedOrderId === order.id && (
-                <div className="border-t border-gray-700/50 p-6 space-y-6">
+                <div className="border-t border-white/10 p-6 space-y-6 bg-[#0C121D]/70">
                   {/* Status Actions */}
                   {STATUS_TRANSITIONS[order.status].length > 0 && (
                     <div>
-                      <div className="text-sm font-semibold text-gray-400 mb-3">Update Status</div>
+                      <div className="text-xs font-semibold text-[#8390A5] uppercase tracking-wider mb-3">Update Status</div>
                       <div className="flex flex-wrap gap-2">
                         {STATUS_TRANSITIONS[order.status].map((nextStatus) => (
                           <button
@@ -192,8 +208,8 @@ export const AdminOrdersPage: React.FC = () => {
                             onClick={() => handleStatusUpdate(order.id, nextStatus)}
                             className={`px-4 py-2 rounded-lg font-semibold transition-all ${
                               nextStatus === 'CANCELLED'
-                                ? 'bg-red-600 hover:bg-red-500 text-white'
-                                : 'bg-blue-600 hover:bg-blue-500 text-white'
+                                ? 'bg-red-500/15 hover:bg-red-500/25 border border-red-400/30 text-red-300'
+                                : 'bg-[#4F86F7]/15 hover:bg-[#4F86F7]/25 border border-[#4F86F7]/30 text-blue-200'
                             }`}
                           >
                             Mark as {nextStatus.replace(/_/g, ' ')}
@@ -205,10 +221,10 @@ export const AdminOrdersPage: React.FC = () => {
 
                   {/* Order Items */}
                   <div>
-                    <div className="text-sm font-semibold text-gray-400 mb-3">Order Items</div>
-                    <div className="bg-gray-900/50 rounded-lg overflow-hidden">
+                    <div className="text-xs font-semibold text-[#8390A5] uppercase tracking-wider mb-3">Order Items</div>
+                    <div className="bg-[#080D16] border border-white/10 rounded-lg overflow-hidden">
                       <table className="w-full">
-                        <thead className="bg-gray-800/50">
+                        <thead className="bg-white/[0.04]">
                           <tr>
                             <th className="text-left px-4 py-3 text-gray-400 text-sm font-semibold">Product</th>
                             <th className="text-left px-4 py-3 text-gray-400 text-sm font-semibold">Brand</th>
@@ -219,7 +235,7 @@ export const AdminOrdersPage: React.FC = () => {
                         </thead>
                         <tbody>
                           {order.items.map((item) => (
-                            <tr key={item.id} className="border-t border-gray-700/30">
+                            <tr key={item.id} className="border-t border-white/10">
                               <td className="px-4 py-3 text-white">{item.product.name}</td>
                               <td className="px-4 py-3 text-gray-300">{item.product.brand}</td>
                               <td className="px-4 py-3 text-white">{item.quantity}</td>
@@ -234,8 +250,8 @@ export const AdminOrdersPage: React.FC = () => {
 
                   {/* Delivery Address */}
                   <div>
-                    <div className="text-sm font-semibold text-gray-400 mb-3">Delivery Address</div>
-                    <div className="bg-gray-900/50 rounded-lg p-4">
+                    <div className="text-xs font-semibold text-[#8390A5] uppercase tracking-wider mb-3">Delivery Address</div>
+                    <div className="bg-[#080D16] border border-white/10 rounded-lg p-4">
                       <div className="text-white space-y-1">
                         <div className="font-semibold">{order.delivery_address.full_name}</div>
                         <div className="text-gray-300">{order.delivery_address.mobile}</div>

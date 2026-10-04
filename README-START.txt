@@ -12,4 +12,4 @@ npm run dev
 Access:
 - Backend: http://localhost:8000
 - API Docs: http://localhost:8000/docs
-- Frontend: http://localhost:5173
+- Frontend: http://localhost:3000

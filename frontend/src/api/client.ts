@@ -1,6 +1,17 @@
 ﻿import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+// Use Vite's same-origin proxies during local development. Production builds
+// can set VITE_API_BASE_URL to the backend origin (without a trailing slash).
+export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
+
+export const resolveImageUrl = (url?: string | null): string => {
+  if (!url || url.startsWith('blob:') || url.startsWith('data:') || /^https?:\/\//.test(url)) {
+    return url || '';
+  }
+
+  const path = url.startsWith('/') ? url : `/${url}`;
+  return `${API_BASE_URL}${path}`;
+};
 
 // Create axios instance
 export const api = axios.create({
@@ -28,8 +39,14 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Clear token and redirect to login
+    if (
+      (error.response?.status === 401 || error.response?.status === 403) &&
+      error.config?.url?.startsWith('/api/admin')
+    ) {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('auth-storage');
+      window.location.href = '/admin/login';
+    } else if (error.response?.status === 401) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('user');
       window.location.href = '/login';

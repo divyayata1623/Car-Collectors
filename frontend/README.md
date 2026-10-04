@@ -39,7 +39,9 @@ This will install all required dependencies including:
 Copy `.env.example` to `.env` and configure:
 
 ```bash
-VITE_API_BASE_URL=http://localhost:8000/v1
+# Leave unset for local development; Vite proxies /api and /uploads to FastAPI.
+# For a separately hosted backend, set its origin without a trailing slash.
+VITE_API_BASE_URL=http://localhost:8000
 VITE_ENV=development
 ```
 

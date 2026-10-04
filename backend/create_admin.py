@@ -2,18 +2,39 @@
 Create admin account for Car Collectors
 Run this once to set up your admin login
 """
+import os
+from dotenv import load_dotenv
+
 from services.auth import AuthService
 from database import SessionLocal
 from schemas.user import UserCreate
 
+load_dotenv()
+
+
 def create_admin():
+    admin_email = os.getenv("ADMIN_EMAIL")
+    admin_password = os.getenv("ADMIN_PASSWORD")
+    admin_full_name = os.getenv("ADMIN_FULL_NAME")
+
+    if (
+        not admin_email
+        or not admin_password
+        or not admin_full_name
+        or admin_password.lower().startswith(("your_", "replace_", "change_"))
+    ):
+        print(
+            "Admin setup requires ADMIN_EMAIL, ADMIN_PASSWORD, and "
+            "ADMIN_FULL_NAME in the local .env file."
+        )
+        return
+
     db = SessionLocal()
     try:
-        # Admin credentials
         admin_data = UserCreate(
-            email="admin@carcollectors.com",
-            password="Admin@123456",  # Change this to your preferred password
-            full_name="Store Admin"
+            email=admin_email,
+            password=admin_password,
+            full_name=admin_full_name,
         )
         
         # Check if admin already exists

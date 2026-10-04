@@ -100,3 +100,8 @@ temp/
 
 # TypeScript
 *.tsbuildinfo
+
+# Uploads
+backend/uploads/*
+!backend/uploads/.gitkeep
+

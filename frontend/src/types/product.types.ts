@@ -13,11 +13,14 @@ export interface Product {
   brand: string;
   series?: string;
   model?: string;
-  category: Category;
+  category?: Category | null;
   description?: string;
   price: number;
   stock_quantity: number;
   scale?: string;
+  color?: string;
+  year?: number;
+  condition?: string;
   material?: string;
   front_package_image_url: string;
   back_package_image_url: string;

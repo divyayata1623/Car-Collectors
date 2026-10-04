@@ -8,15 +8,19 @@ from decimal import Decimal
 from datetime import datetime
 import random
 import string
+from uuid import uuid4
 
 from models.order import Order
 from models.order_item import OrderItem
 from models.delivery_address import DeliveryAddress
 from models.cart_item import CartItem
 from models.product import Product
+from models.user import User
+from models.shipping_setting import ShippingSetting
 from repositories.product import ProductRepository
 from services.cart import CartService
-from schemas.order import OrderCreate
+from services.auth import AuthService
+from schemas.order import GuestOrderCreate, OrderCreate
 
 
 class OrderService:
@@ -149,6 +153,91 @@ class OrderService:
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Failed to create order: {str(e)}"
             )
+
+    @staticmethod
+    def create_guest_order(db: Session, order_data: GuestOrderCreate) -> Order:
+        """Create an order for a customer without requiring account credentials."""
+        try:
+            product_ids = [item.product_id for item in order_data.items]
+            products = db.query(Product).filter(Product.id.in_(product_ids), Product.is_active.is_(True)).all()
+            products_by_id = {str(product.id): product for product in products}
+
+            total_amount = Decimal("0.00")
+            order_items = []
+            for item in order_data.items:
+                product = products_by_id.get(item.product_id)
+                if not product:
+                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+                if product.stock_quantity < item.quantity:
+                    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Insufficient stock for {product.name}")
+
+                subtotal = product.price * item.quantity
+                total_amount += subtotal
+                order_items.append((product, item.quantity, subtotal))
+
+            shipping_settings = db.query(ShippingSetting).filter(ShippingSetting.id == 1).first()
+            shipping_fee = Decimal("0.00")
+            if shipping_settings:
+                qualifies_for_free_shipping = (
+                    shipping_settings.free_shipping_threshold > 0
+                    and total_amount >= shipping_settings.free_shipping_threshold
+                )
+                if not qualifies_for_free_shipping:
+                    shipping_fee = shipping_settings.flat_fee
+            total_amount += shipping_fee
+
+            guest_user = User(
+                email=f"guest-{uuid4()}@guest.carcollectors.local",
+                password_hash=AuthService.hash_password(str(uuid4())),
+                full_name=order_data.delivery_address.full_name,
+                mobile=order_data.delivery_address.mobile,
+                role="CUSTOMER",
+                is_active=True,
+            )
+            db.add(guest_user)
+            db.flush()
+
+            order = Order(
+                order_number=OrderService.generate_order_number(),
+                user_id=guest_user.id,
+                status="PENDING",
+                total_amount=total_amount,
+            )
+            db.add(order)
+            db.flush()
+
+            for product, quantity, subtotal in order_items:
+                db.add(OrderItem(
+                    order_id=order.id,
+                    product_id=product.id,
+                    quantity=quantity,
+                    unit_price=product.price,
+                    subtotal=subtotal,
+                ))
+                ProductRepository.update_stock(db, str(product.id), -quantity)
+
+            db.add(DeliveryAddress(
+                order_id=order.id,
+                full_name=order_data.delivery_address.full_name,
+                mobile=order_data.delivery_address.mobile,
+                address_line=order_data.delivery_address.address_line,
+                city=order_data.delivery_address.city,
+                state=order_data.delivery_address.state,
+                pincode=order_data.delivery_address.pincode,
+            ))
+            db.commit()
+            db.refresh(order)
+
+            return db.query(Order).options(
+                joinedload(Order.order_items).joinedload(OrderItem.product),
+                joinedload(Order.delivery_address),
+            ).filter(Order.id == order.id).first()
+        except HTTPException:
+            db.rollback()
+            raise
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Failed to create guest order: {str(e)}")
     
     @staticmethod
     def get_order_by_id(db: Session, order_id: str, user_id: Optional[str] = None) -> Optional[Order]:
