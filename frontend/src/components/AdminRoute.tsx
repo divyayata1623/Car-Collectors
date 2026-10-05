@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 
@@ -7,7 +7,7 @@ interface AdminRouteProps {
 }
 
 export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
-  const { isAuthenticated, user, token } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   const [isHydrated, setIsHydrated] = useState(false);
 
   // Wait for zustand persist to hydrate
