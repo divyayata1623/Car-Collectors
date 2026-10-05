@@ -1,0 +1,13 @@
+routes:
+  - path: /admin/*
+    dest: /index.html
+  - path: /products/*
+    dest: /index.html
+  - path: /cart*
+    dest: /index.html
+  - path: /checkout*
+    dest: /index.html
+  - path: /orders*
+    dest: /index.html
+  - path: /*
+    dest: $path
